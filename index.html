@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>A-Frame Room</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+</head>
+
+<body>
+    <a-scene physics="gravity: 0">
+        
+        <a-sky color="#87CEEB"></a-sky>
+        
+        <!-- FLOOR -->
+        <a-plane color="#d9d9d9"
+                 width="10" height="10" depth="0.1"
+                 rotation="-90 0 0"
+                 position="0 0 0"
+                 static-body>
+        </a-plane>
+
+        <!-- PLAYER -->
+        <a-entity id="player" 
+                  camera 
+                  wasd-controls 
+                  look-controls 
+                  position="0 1.6 4"
+                  dynamic-body>
+        </a-entity>
+
+        <!-- WALLS -->
+        <a-plane color="#ffffff" width="10" height="5" depth="0.1"
+                 position="0 1.5 -5"
+                 static-body>
+        </a-plane>
+
+        <a-plane color="#ffffff" width="10" height="5" depth="0.1"
+                 rotation="0 180 0"
+                 position="0 1.5 5"
+                 static-body>
+        </a-plane>
+
+        <a-plane color="#ffffff" width="10" height="5" depth="0.1"
+                 rotation="0 90 0"
+                 position="-5 1.5 0"
+                 static-body>
+        </a-plane>
+
+        <a-plane color="#ffffff" width="10" height="5" depth="0.1"
+                 rotation="0 -90 0"
+                 position="5 1.5 0"
+                 static-body>
+        </a-plane>
+
+        <!-- CEILING -->
+        <a-plane color="#d9d9d9"
+                 width="10" height="10" depth="0.1"
+                 rotation="90 0 0"
+                 position="0 4 0"
+                 static-body>
+        </a-plane>
+
+    </a-scene>
+</body>
+
+</html>
