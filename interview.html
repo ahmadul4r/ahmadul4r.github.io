@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Interview Room Prototype</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  </head>
+
+  <body>
+    <a-scene
+      background="color: #f5f0e9"
+      renderer="physicallyCorrectLights: true; colorManagement: true; shadowMapEnabled: true; shadowMapType: pcfsoft">
+
+      <!-- =============================== -->
+      <!-- ASSETS (Textures, Models, etc.) -->
+      <!-- =============================== -->
+      <a-assets>
+        <img id="ceilingColor" src="assets/OfficeCeiling001_1K-PNG/OfficeCeiling001_1K-PNG_Color.png">
+        <img id="ceilingNormal" src="assets/OfficeCeiling001_1K-PNG/OfficeCeiling001_1K-PNG_NormalGL.png">
+        <img id="ceilingRough" src="assets/OfficeCeiling001_1K-PNG/OfficeCeiling001_1K-PNG_Roughness.png">
+        <img id="ceilingAO" src="assets/OfficeCeiling001_1K-PNG/OfficeCeiling001_1K-PNG_AmbientOcclusion.png">
+
+                <!-- Floor Wood PBR Textures -->
+        <img id="floorColor" src="assets/WoodFloor071_1K-PNG/WoodFloor071_1K-PNG_Color.png">
+        <img id="floorNormal" src="assets/WoodFloor071_1K-PNG/WoodFloor071_1K-PNG_NormalGL.png">
+        <img id="floorRough" src="assets/WoodFloor071_1K-PNG/WoodFloor071_1K-PNG_Roughness.png">
+        <img id="floorAO" src="assets/WoodFloor071_1K-PNG/WoodFloor071_1K-PNG_AmbientOcclusion.png">
+
+      </a-assets>
+
+
+      <!-- =============================== -->
+      <!-- CAMERA & PLAYER CONTROLS -->
+      <!-- =============================== -->
+      <a-entity position="0 1.6 3">
+        <a-entity camera look-controls wasd-controls="acceleration: 8"></a-entity>
+      </a-entity>
+
+
+      <!-- =============================== -->
+      <!-- LIGHTING (Balanced & Bright) -->
+      <!-- =============================== -->
+
+      <!-- Ambient Room Light -->
+      <a-entity 
+        light="type: ambient; color: #ffffff; intensity: 1">
+      </a-entity>
+
+      <!-- Overhead Directional Light -->
+      <a-entity
+        light="type: directional;
+               intensity: 1.25;
+               castShadow: true;
+               color: #ffffff"
+        position="0 4 0"
+        rotation="-90 0 0">
+      </a-entity>
+
+      <!-- Window Fill Light -->
+      <a-entity
+        light="type: directional;
+               intensity: 0.75;
+               color: #ffffff"
+        position="-5 3 -2"
+        rotation="-45 30 0">
+      </a-entity>
+
+      <!-- Soft Floor Bounce Light -->
+      <a-entity
+        light="type: hemisphere;
+               skyColor: #ffffff;
+               groundColor: #f5e7d1;
+               intensity: 0.55">
+      </a-entity>
+
+      <!-- Ceiling Boost Spotlight -->
+      <a-entity
+        position="0 1.3 0"
+        light="
+          type: spot;
+          intensity: 1.8;
+          angle: 75;
+          penumbra: 0.5;
+          distance: 5;
+          color: #ffffff"
+        rotation="90 0 0">
+      </a-entity>
+
+        <!-- Wall Fill Light (brightens walls without brightening floor) -->
+<a-entity
+  light="type: directional;
+         intensity: 0.95;
+         color: #ffffff"
+  position="0 2 3"
+  rotation="-10 180 0">
+</a-entity>
+
+
+
+
+
+
+      <!-- =============================== -->
+      <!-- ROOM STRUCTURE (Floor, Walls, Ceiling) -->
+      <!-- =============================== -->
+
+      <!-- ====================================== -->
+        <!-- REALISTIC WOOD FLOOR (PBR Material)     -->
+        <!-- ====================================== -->
+        <a-plane 
+          position="0 0 0"
+          rotation="-90 0 0"
+          width="10"
+          height="10"
+          material="
+            src: #floorColor;
+            normalMap: #floorNormal;
+            roughnessMap: #floorRough;
+            ambientOcclusionMap: #floorAO;
+            roughness: 0.9;       /* keeps floor matte like offices */
+            metalness: 0;         /* wood is not metallic */
+            repeat: 3 3;          /* adjusts tile size, change if too big/small */
+            normalTextureRepeat: 3 3;
+            ambientOcclusionTextureRepeat: 3 3;
+          "
+          shadow="receive: true">
+        </a-plane>
+
+
+      <!-- Back Wall (Behind Player) -->
+      <a-box 
+        position="0 1.5 5" 
+        depth="0.1" height="3" width="10"
+        color="#e9d9c6">
+      </a-box>
+
+      <!-- Ceiling (PBR Textured Tiles) -->
+      <a-plane 
+        position="0 3 0"
+        rotation="90 0 0"
+        width="10"
+        height="10"
+        material="
+          src: #ceilingColor;
+          normalMap: #ceilingNormal;
+          roughnessMap: #ceilingRough;
+          ambientOcclusionMap: #ceilingAO;
+          roughness: 1;
+          metalness: 0;
+          repeat: 4 4;
+          normalTextureRepeat: 4 4;
+          ambientOcclusionTextureRepeat: 4 4;
+        ">
+      </a-plane>
+
+      <!-- Back Wall (Behind Interviewer) -->
+      <a-box 
+        position="0 1.5 -5" 
+        depth="0.1" height="3" width="10"
+        color="#e9d9c6">
+      </a-box>
+
+      <!-- Left Wall -->
+      <a-box 
+        position="-5 1.5 0" 
+        depth="10" height="3" width="0.1"
+        color="#e9d9c6">
+      </a-box>
+
+      <!-- Right Wall -->
+      <a-box 
+        position="5 1.5 0" 
+        depth="10" height="3" width="0.1"
+        color="#e9d9c6">
+      </a-box>
+
+      <!-- Decorative Wall Picture -->
+      <a-plane 
+        position="-2.2 1.7 -4.9" 
+        width="1.6" height="1.2" 
+        color="#c8dfff">
+      </a-plane>
+
+
+
+
+      <!-- =============================== -->
+      <!-- INTERVIEW SETUP (Furniture & Avatar) -->
+      <!-- =============================== -->
+
+      <a-entity id="interview-setup" position="0 0 1.7">
+
+        <!-- Table Surface -->
+        <a-box 
+          position="0 0.75 -1.8" 
+          width="2.5" depth="1.2" height="0.1" 
+          color="#f3e7d7"
+          shadow="receive: true">
+        </a-box>
+
+        <!-- Table Legs -->
+        <a-box position="-1.1 0.4 -1.3" width="0.1" height="0.8" depth="0.1" color="#d8c7b1"></a-box>
+        <a-box position="1.1 0.4 -1.3"  width="0.1" height="0.8" depth="0.1" color="#d8c7b1"></a-box>
+        <a-box position="-1.1 0.4 -2.3" width="0.1" height="0.8" depth="0.1" color="#d8c7b1"></a-box>
+        <a-box position="1.1 0.4 -2.3"  width="0.1" height="0.8" depth="0.1" color="#d8c7b1"></a-box>
+
+        <!-- Candidate Chair -->
+        <a-entity
+            gltf-model="url(assets/japanese_wooden_chair.glb)"
+            position="0.6 0 -0.7"
+            rotation="0 130 0"
+            scale="0.9 0.9 0.9"
+            shadow="cast: true">
+        </a-entity>
+
+        <!-- Interviewer Chair -->
+        <a-entity
+            gltf-model="url(assets/japanese_wooden_chair.glb)"
+            position="0.15 0 -3.3"
+            rotation="0 -90 0"
+            scale="0.9 0.9 0.9"
+            shadow="cast: true">
+        </a-entity>
+
+        <!-- Interviewer Head -->
+        <a-sphere 
+          position="0 1.6 -3.0" 
+          radius="0.2" 
+          color="#f4d7c6"
+          shadow="cast: true">
+        </a-sphere>
+
+        <!-- Interviewer Body -->
+        <a-box 
+          position="0 1.1 -3.0" 
+          width="0.5" height="0.7" depth="0.3" 
+          color="#7996ff"
+          shadow="cast: true">
+        </a-box>
+
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
